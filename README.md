@@ -39,6 +39,11 @@ dev-prompts/
     ├── bug-fixing/
     │   └── .gitkeep
     │
+    ├── documentation/
+    │   └── feature-prd/
+    │       ├── README.md
+    │       └── prompt.md
+    │
     ├── testing/
     │   └── .gitkeep
     │
@@ -53,6 +58,12 @@ The structure evolves from real usage.
 New categories should only be introduced when reusable prompts actually require them.
 
 ## Prompt Catalog
+
+### Documentation
+
+| Prompt | Purpose | Documentation | Prompt |
+| --- | --- | --- | --- |
+| Feature PRD | Conduct a structured requirements interview and generate a feature-level Product Requirements Document. | [Documentation](./prompts/documentation/feature-prd/README.md) | [Prompt](./prompts/documentation/feature-prd/prompt.md) |
 
 ### Utilities
 
@@ -122,6 +133,7 @@ code review
 bug investigation
 test generation
 architecture analysis
+feature PRD generation
 commit generation
 pull request preparation
 ```
@@ -191,6 +203,20 @@ current Git diff
 project-aware code review
 ```
 
+Or:
+
+```text
+generic feature-PRD prompt
+        +
+project documentation
+        +
+existing ADRs
+        +
+feature context
+        =
+project-aware Feature PRD
+```
+
 This allows the reusable prompt to remain generic while the target project provides its own rules.
 
 ## Using Prompts in a Project
@@ -204,21 +230,28 @@ A recommended local structure is:
 ```text
 my-project/
 ├── .prompts/
-│   └── code-review.md
+│   ├── code-review.md
+│   └── feature-prd.md
 │
 ├── AGENTS.md
 ├── src/
 └── ...
 ```
 
-The local file can be a symbolic link to the canonical prompt stored here.
+The local files can be symbolic links to the canonical prompts stored here.
 
-Example:
+Examples:
 
 ```text
 my-project/.prompts/code-review.md
         │
         └──> dev-prompts/prompts/utils/code-review/prompt.md
+```
+
+```text
+my-project/.prompts/feature-prd.md
+        │
+        └──> dev-prompts/prompts/documentation/feature-prd/prompt.md
 ```
 
 This provides:
@@ -235,18 +268,23 @@ Example on Windows:
 ```text
 C:\Users\<user>\dev-prompts\
 └── prompts\
+    ├── documentation\
+    │   └── feature-prd\
+    │       └── prompt.md
+    │
     └── utils\
         └── code-review\
             └── prompt.md
 ```
 
-A project may expose that prompt as:
+A project may expose only the prompts it needs, for example:
 
 ```text
 project\.prompts\code-review.md
+project\.prompts\feature-prd.md
 ```
 
-while the canonical file remains inside this repository.
+while the canonical files remain inside this repository.
 
 The target project should normally ignore local reusable prompt links:
 
@@ -391,7 +429,13 @@ For example:
 prompts/utils/code-review/prompt.md
 ```
 
-Its history belongs in Git.
+or:
+
+```text
+prompts/documentation/feature-prd/prompt.md
+```
+
+Their history belongs in Git.
 
 Prompt-level documentation may contain a small human-readable changelog for important recent behavioral changes.
 
@@ -422,6 +466,23 @@ Do not commit:
 Project-specific or confidential instructions belong in the appropriate private repository.
 
 ## Current Prompts
+
+### Feature PRD
+
+Conduct an interview-driven requirements-elicitation workflow to create a clear, structured, and actionable Feature Product Requirements Document.
+
+The prompt:
+
+- reuses existing project context before asking questions;
+- distinguishes confirmed information from hypotheses and unknowns;
+- avoids inventing requirements or technical decisions;
+- defines goals, scope, functional requirements, non-functional requirements, dependencies, risks, and acceptance criteria;
+- performs consistency checks before generating the final document;
+- produces a Markdown PRD with optional structured JSON output;
+- preserves the boundary between feature requirements and detailed technical design.
+
+- [Documentation](./prompts/documentation/feature-prd/README.md)
+- [Prompt](./prompts/documentation/feature-prd/prompt.md)
 
 ### Code Review
 
