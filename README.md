@@ -44,7 +44,11 @@ dev-prompts/
     │   │   ├── README.md
     │   │   └── prompt.md
     │   │
-    │   └── high-level-design/
+    │   ├── high-level-design/
+    │   │   ├── README.md
+    │   │   └── prompt.md
+    │   │
+    │   └── feature-design/
     │       ├── README.md
     │       └── prompt.md
     │
@@ -69,6 +73,7 @@ New categories should only be introduced when reusable prompts actually require 
 | --- | --- | --- | --- |
 | Feature PRD | Conduct a structured requirements interview and generate a feature-level Product Requirements Document. | [Documentation](./prompts/documentation/feature-prd/README.md) | [Prompt](./prompts/documentation/feature-prd/prompt.md) |
 | High-Level Design | Define a context-aware system architecture and generate a High-Level Design with explicit decisions, risks, interfaces, and open questions. | [Documentation](./prompts/documentation/high-level-design/README.md) | [Prompt](./prompts/documentation/high-level-design/prompt.md) |
+| Feature Design | Define detailed feature behavior, public contracts, failure semantics, compatibility, observability, and technical acceptance criteria. | [Documentation](./prompts/documentation/feature-design/README.md) | [Prompt](./prompts/documentation/feature-design/prompt.md) |
 
 ### Utilities
 
@@ -140,6 +145,7 @@ test generation
 architecture analysis
 feature PRD generation
 high-level design generation
+feature design generation
 commit generation
 pull request preparation
 ```
@@ -241,6 +247,26 @@ codebase context
 project-aware High-Level Design
 ```
 
+Or:
+
+```text
+generic feature-design prompt
+        +
+Feature PRD
+        +
+High-Level Design
+        +
+ADRs / RFCs
+        +
+technical research
+        +
+existing contracts
+        +
+codebase and tests
+        =
+project-aware Feature Design Doc
+```
+
 This allows the reusable prompt to remain generic while the target project provides its own rules.
 
 ## Using Prompts in a Project
@@ -256,7 +282,8 @@ my-project/
 ├── .prompts/
 │   ├── code-review.md
 │   ├── feature-prd.md
-│   └── high-level-design.md
+│   ├── high-level-design.md
+│   └── feature-design.md
 │
 ├── AGENTS.md
 ├── src/
@@ -285,6 +312,12 @@ my-project/.prompts/high-level-design.md
         └──> dev-prompts/prompts/documentation/high-level-design/prompt.md
 ```
 
+```text
+my-project/.prompts/feature-design.md
+        │
+        └──> dev-prompts/prompts/documentation/feature-design/prompt.md
+```
+
 This provides:
 
 - one canonical prompt;
@@ -303,7 +336,10 @@ C:\Users\<user>\dev-prompts\
     │   ├── feature-prd\
     │   │   └── prompt.md
     │   │
-    │   └── high-level-design\
+    │   ├── high-level-design\
+    │   │   └── prompt.md
+    │   │
+    │   └── feature-design\
     │       └── prompt.md
     │
     └── utils\
@@ -317,6 +353,7 @@ A project may expose only the prompts it needs, for example:
 project\.prompts\code-review.md
 project\.prompts\feature-prd.md
 project\.prompts\high-level-design.md
+project\.prompts\feature-design.md
 ```
 
 while the canonical files remain inside this repository.
@@ -476,6 +513,12 @@ or:
 prompts/documentation/high-level-design/prompt.md
 ```
 
+or:
+
+```text
+prompts/documentation/feature-design/prompt.md
+```
+
 Their history belongs in Git.
 
 Prompt-level documentation may contain a small human-readable changelog for important recent behavioral changes.
@@ -546,6 +589,32 @@ The prompt:
 
 - [Documentation](./prompts/documentation/high-level-design/README.md)
 - [Prompt](./prompts/documentation/high-level-design/prompt.md)
+
+### Feature Design
+
+Conduct a context-first feature-design workflow to create a technically actionable and traceable Feature Design Doc.
+
+The prompt:
+
+- reuses Feature PRDs, HLDs, ADRs, RFCs, technical research, existing contracts, codebase context, and tests before asking questions;
+- asks one primary question at a time;
+- requires confirmation after every feature-design interview stage;
+- distinguishes confirmed information, hypotheses, and unknowns;
+- uses stable IDs for objectives, flows, contracts, errors, observability, dependencies, acceptance criteria, risks, and hypotheses;
+- avoids inventing endpoints, payloads, retries, timeouts, status codes, dependency versions, or numeric targets;
+- defines detailed runtime flows and externally relevant contracts;
+- classifies contracts as existing, new, modified, deprecated, removed, or proposed;
+- defines error, exception, fallback, and resilience behavior;
+- covers observability, dependencies, compatibility, migrations, and rollout constraints when relevant;
+- connects technical acceptance criteria to flows, contracts, errors, and objectives;
+- preserves upstream PRD, HLD, ADR, and RFC decisions while surfacing contradictions;
+- distinguishes current code or test behavior from desired target behavior;
+- performs consistency checks before generating the final document;
+- preserves the boundary between Feature Design and lower-level implementation detail;
+- produces a Markdown FDD with optional structured JSON output.
+
+- [Documentation](./prompts/documentation/feature-design/README.md)
+- [Prompt](./prompts/documentation/feature-design/prompt.md)
 
 ### Code Review
 
