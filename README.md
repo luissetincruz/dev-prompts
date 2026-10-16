@@ -52,7 +52,11 @@ dev-prompts/
     │   │   ├── README.md
     │   │   └── prompt.md
     │   │
-    │   └── feature-design/
+    │   ├── feature-design/
+    │   │   ├── README.md
+    │   │   └── prompt.md
+    │   │
+    │   └── low-level-design/
     │       ├── README.md
     │       └── prompt.md
     │
@@ -79,6 +83,7 @@ New categories should only be introduced when reusable prompts actually require 
 | Feature PRD | Conduct a structured requirements interview and generate a feature-level Product Requirements Document. | [Documentation](./prompts/documentation/feature-prd/README.md) | [Prompt](./prompts/documentation/feature-prd/prompt.md) |
 | High-Level Design | Define a context-aware system architecture and generate a High-Level Design with explicit decisions, risks, interfaces, and open questions. | [Documentation](./prompts/documentation/high-level-design/README.md) | [Prompt](./prompts/documentation/high-level-design/prompt.md) |
 | Feature Design | Define detailed feature behavior, public contracts, failure semantics, compatibility, observability, and technical acceptance criteria. | [Documentation](./prompts/documentation/feature-design/README.md) | [Prompt](./prompts/documentation/feature-design/prompt.md) |
+| Low-Level Design | Define implementation-level structure, internal interfaces, data models, algorithms, transactions, concurrency, validation, errors, observability hooks, and testability. | [Documentation](./prompts/documentation/low-level-design/README.md) | [Prompt](./prompts/documentation/low-level-design/prompt.md) |
 
 ### Utilities
 
@@ -152,6 +157,7 @@ product PRD generation
 feature PRD generation
 high-level design generation
 feature design generation
+low-level design generation
 commit generation
 pull request preparation
 ```
@@ -223,7 +229,8 @@ project-aware code review
 
 Or:
 
-```textgeneric product-PRD prompt
+```text
+generic product-PRD prompt
         +
 company / product strategy
         +
@@ -288,6 +295,24 @@ codebase and tests
 project-aware Feature Design Doc
 ```
 
+Or:
+
+```text
+generic low-level-design prompt
+        +
+Feature Design Doc
+        +
+High-Level Design
+        +
+ADRs / RFCs
+        +
+repository conventions
+        +
+codebase and tests
+        =
+project-aware Low-Level Design
+```
+
 This allows the reusable prompt to remain generic while the target project provides its own rules.
 
 ## Using Prompts in a Project
@@ -305,7 +330,8 @@ my-project/
 │   ├── product-prd.md
 │   ├── feature-prd.md
 │   ├── high-level-design.md
-│   └── feature-design.md
+│   ├── feature-design.md
+│   └── low-level-design.md
 │
 ├── AGENTS.md
 ├── src/
@@ -346,6 +372,12 @@ my-project/.prompts/feature-design.md
         └──> dev-prompts/prompts/documentation/feature-design/prompt.md
 ```
 
+```text
+my-project/.prompts/low-level-design.md
+        │
+        └──> dev-prompts/prompts/documentation/low-level-design/prompt.md
+```
+
 This provides:
 
 - one canonical prompt;
@@ -370,7 +402,10 @@ C:\Users\<user>\dev-prompts\
     │   ├── high-level-design\
     │   │   └── prompt.md
     │   │
-    │   └── feature-design\
+    │   ├── feature-design\
+    │   │   └── prompt.md
+    │   │
+    │   └── low-level-design\
     │       └── prompt.md
     │
     └── utils\
@@ -386,6 +421,7 @@ project\.prompts\product-prd.md
 project\.prompts\feature-prd.md
 project\.prompts\high-level-design.md
 project\.prompts\feature-design.md
+project\.prompts\low-level-design.md
 ```
 
 while the canonical files remain inside this repository.
@@ -469,7 +505,8 @@ Examples:
 Prompts related to:
 
 - Docker;
-- Docker Compose;- Kubernetes;
+- Docker Compose;
+- Kubernetes;
 - Terraform;
 - CI/CD.
 
@@ -554,6 +591,12 @@ or:
 
 ```text
 prompts/documentation/feature-design/prompt.md
+```
+
+or:
+
+```text
+prompts/documentation/low-level-design/prompt.md
 ```
 
 Their history belongs in Git.
@@ -676,6 +719,32 @@ The prompt:
 
 - [Documentation](./prompts/documentation/feature-design/README.md)
 - [Prompt](./prompts/documentation/feature-design/prompt.md)
+
+### Low-Level Design
+
+Conduct a context-first implementation-design workflow to create an implementation-ready and traceable Low-Level Design.
+
+The prompt:
+
+- reuses Product PRDs, Feature PRDs, HLDs, FDDs, ADRs, RFCs, technical research, codebase context, schemas, tests, and repository conventions before asking questions;
+- asks one primary question at a time;
+- requires confirmation after every low-level-design interview stage;
+- distinguishes confirmed information, hypotheses, and unknowns;
+- distinguishes current implementation from target design;
+- uses stable IDs for modules, classes, interfaces, data structures, algorithms, sequences, state, transactions, concurrency, validation, errors, observability, tests, risks, decisions, and hypotheses;
+- avoids inventing design patterns, package boundaries, transaction strategies, locking approaches, dependencies, technologies, or numeric targets;
+- defines module decomposition, responsibilities, internal interfaces, and data structures;
+- defines non-trivial algorithms and detailed call sequences;
+- covers state transitions, persistence, transaction boundaries, concurrency, and synchronization when relevant;
+- defines validation, internal error mapping, observability hooks, security concerns, and testability;
+- preserves upstream Product PRD, Feature PRD, HLD, FDD, ADR, and RFC decisions while surfacing contradictions;
+- distinguishes codebase and test evidence from desired future implementation;
+- performs consistency checks before generating the final document;
+- preserves the boundary between Low-Level Design, implementation planning, and production code;
+- produces a Markdown LLD with optional structured JSON output.
+
+- [Documentation](./prompts/documentation/low-level-design/README.md)
+- [Prompt](./prompts/documentation/low-level-design/prompt.md)
 
 ### Code Review
 
