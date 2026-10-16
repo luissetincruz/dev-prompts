@@ -40,7 +40,11 @@ dev-prompts/
     │   └── .gitkeep
     │
     ├── documentation/
-    │   └── feature-prd/
+    │   ├── feature-prd/
+    │   │   ├── README.md
+    │   │   └── prompt.md
+    │   │
+    │   └── high-level-design/
     │       ├── README.md
     │       └── prompt.md
     │
@@ -64,6 +68,7 @@ New categories should only be introduced when reusable prompts actually require 
 | Prompt | Purpose | Documentation | Prompt |
 | --- | --- | --- | --- |
 | Feature PRD | Conduct a structured requirements interview and generate a feature-level Product Requirements Document. | [Documentation](./prompts/documentation/feature-prd/README.md) | [Prompt](./prompts/documentation/feature-prd/prompt.md) |
+| High-Level Design | Define a context-aware system architecture and generate a High-Level Design with explicit decisions, risks, interfaces, and open questions. | [Documentation](./prompts/documentation/high-level-design/README.md) | [Prompt](./prompts/documentation/high-level-design/prompt.md) |
 
 ### Utilities
 
@@ -134,6 +139,7 @@ bug investigation
 test generation
 architecture analysis
 feature PRD generation
+high-level design generation
 commit generation
 pull request preparation
 ```
@@ -217,6 +223,24 @@ feature context
 project-aware Feature PRD
 ```
 
+Or:
+
+```text
+generic high-level-design prompt
+        +
+Feature PRD
+        +
+existing architecture
+        +
+ADRs / RFCs
+        +
+technical research
+        +
+codebase context
+        =
+project-aware High-Level Design
+```
+
 This allows the reusable prompt to remain generic while the target project provides its own rules.
 
 ## Using Prompts in a Project
@@ -231,7 +255,8 @@ A recommended local structure is:
 my-project/
 ├── .prompts/
 │   ├── code-review.md
-│   └── feature-prd.md
+│   ├── feature-prd.md
+│   └── high-level-design.md
 │
 ├── AGENTS.md
 ├── src/
@@ -254,6 +279,12 @@ my-project/.prompts/feature-prd.md
         └──> dev-prompts/prompts/documentation/feature-prd/prompt.md
 ```
 
+```text
+my-project/.prompts/high-level-design.md
+        │
+        └──> dev-prompts/prompts/documentation/high-level-design/prompt.md
+```
+
 This provides:
 
 - one canonical prompt;
@@ -269,7 +300,10 @@ Example on Windows:
 C:\Users\<user>\dev-prompts\
 └── prompts\
     ├── documentation\
-    │   └── feature-prd\
+    │   ├── feature-prd\
+    │   │   └── prompt.md
+    │   │
+    │   └── high-level-design\
     │       └── prompt.md
     │
     └── utils\
@@ -282,6 +316,7 @@ A project may expose only the prompts it needs, for example:
 ```text
 project\.prompts\code-review.md
 project\.prompts\feature-prd.md
+project\.prompts\high-level-design.md
 ```
 
 while the canonical files remain inside this repository.
@@ -435,6 +470,12 @@ or:
 prompts/documentation/feature-prd/prompt.md
 ```
 
+or:
+
+```text
+prompts/documentation/high-level-design/prompt.md
+```
+
 Their history belongs in Git.
 
 Prompt-level documentation may contain a small human-readable changelog for important recent behavioral changes.
@@ -483,6 +524,28 @@ The prompt:
 
 - [Documentation](./prompts/documentation/feature-prd/README.md)
 - [Prompt](./prompts/documentation/feature-prd/prompt.md)
+
+### High-Level Design
+
+Conduct a context-first architectural-design workflow to create a clear, structured, and reusable High-Level Design.
+
+The prompt:
+
+- reuses PRDs, architecture documentation, ADRs, RFCs, technical research, and codebase context before asking questions;
+- asks one primary question at a time;
+- requires confirmation after every architectural interview stage;
+- distinguishes confirmed information, hypotheses, and unknowns;
+- classifies architectural choices as existing constraints, confirmed decisions, proposed options, or open decisions;
+- avoids inventing technologies, architectural patterns, or numeric quality targets;
+- defines major components, responsibilities, request and data flows, high-level data ownership, and externally relevant interfaces;
+- covers scalability, availability, resilience, security, observability, and architectural risks when relevant;
+- preserves ADRs, RFCs, open questions, pending decisions, and references;
+- performs consistency checks before generating the final document;
+- preserves the boundary between HLD and lower-level Feature Design / implementation detail;
+- produces a Markdown HLD with optional structured JSON output.
+
+- [Documentation](./prompts/documentation/high-level-design/README.md)
+- [Prompt](./prompts/documentation/high-level-design/prompt.md)
 
 ### Code Review
 
