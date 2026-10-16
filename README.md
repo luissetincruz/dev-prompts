@@ -40,6 +40,10 @@ dev-prompts/
     │   └── .gitkeep
     │
     ├── documentation/
+    │   ├── product-prd/
+    │   │   ├── README.md
+    │   │   └── prompt.md
+    │   │
     │   ├── feature-prd/
     │   │   ├── README.md
     │   │   └── prompt.md
@@ -71,6 +75,7 @@ New categories should only be introduced when reusable prompts actually require 
 
 | Prompt | Purpose | Documentation | Prompt |
 | --- | --- | --- | --- |
+| Product PRD | Define product-level vision, outcomes, scope, KPIs, high-level capabilities, dependencies, phases, stakeholders, and risks. | [Documentation](./prompts/documentation/product-prd/README.md) | [Prompt](./prompts/documentation/product-prd/prompt.md) |
 | Feature PRD | Conduct a structured requirements interview and generate a feature-level Product Requirements Document. | [Documentation](./prompts/documentation/feature-prd/README.md) | [Prompt](./prompts/documentation/feature-prd/prompt.md) |
 | High-Level Design | Define a context-aware system architecture and generate a High-Level Design with explicit decisions, risks, interfaces, and open questions. | [Documentation](./prompts/documentation/high-level-design/README.md) | [Prompt](./prompts/documentation/high-level-design/prompt.md) |
 | Feature Design | Define detailed feature behavior, public contracts, failure semantics, compatibility, observability, and technical acceptance criteria. | [Documentation](./prompts/documentation/feature-design/README.md) | [Prompt](./prompts/documentation/feature-design/prompt.md) |
@@ -143,6 +148,7 @@ code review
 bug investigation
 test generation
 architecture analysis
+product PRD generation
 feature PRD generation
 high-level design generation
 feature design generation
@@ -217,6 +223,21 @@ project-aware code review
 
 Or:
 
+```textgeneric product-PRD prompt
+        +
+company / product strategy
+        +
+research and analytics
+        +
+existing product context
+        +
+stakeholder decisions
+        =
+project-aware Product PRD
+```
+
+Or:
+
 ```text
 generic feature-PRD prompt
         +
@@ -281,6 +302,7 @@ A recommended local structure is:
 my-project/
 ├── .prompts/
 │   ├── code-review.md
+│   ├── product-prd.md
 │   ├── feature-prd.md
 │   ├── high-level-design.md
 │   └── feature-design.md
@@ -298,6 +320,12 @@ Examples:
 my-project/.prompts/code-review.md
         │
         └──> dev-prompts/prompts/utils/code-review/prompt.md
+```
+
+```text
+my-project/.prompts/product-prd.md
+        │
+        └──> dev-prompts/prompts/documentation/product-prd/prompt.md
 ```
 
 ```text
@@ -333,6 +361,9 @@ Example on Windows:
 C:\Users\<user>\dev-prompts\
 └── prompts\
     ├── documentation\
+    │   ├── product-prd\
+    │   │   └── prompt.md
+    │   │
     │   ├── feature-prd\
     │   │   └── prompt.md
     │   │
@@ -351,6 +382,7 @@ A project may expose only the prompts it needs, for example:
 
 ```text
 project\.prompts\code-review.md
+project\.prompts\product-prd.md
 project\.prompts\feature-prd.md
 project\.prompts\high-level-design.md
 project\.prompts\feature-design.md
@@ -437,8 +469,7 @@ Examples:
 Prompts related to:
 
 - Docker;
-- Docker Compose;
-- Kubernetes;
+- Docker Compose;- Kubernetes;
 - Terraform;
 - CI/CD.
 
@@ -504,6 +535,12 @@ prompts/utils/code-review/prompt.md
 or:
 
 ```text
+prompts/documentation/product-prd/prompt.md
+```
+
+or:
+
+```text
 prompts/documentation/feature-prd/prompt.md
 ```
 
@@ -550,6 +587,30 @@ Do not commit:
 Project-specific or confidential instructions belong in the appropriate private repository.
 
 ## Current Prompts
+
+### Product PRD
+
+Conduct a context-first product-definition workflow to create a clear, strategic, and reusable Product Requirements Document.
+
+The prompt:
+
+- reuses company strategy, product strategy, market and customer research, analytics, roadmaps, existing PRDs, and stakeholder context before asking questions;
+- asks one primary question at a time;
+- requires confirmation after every product-definition interview stage;
+- distinguishes confirmed information, hypotheses, and unknowns;
+- avoids inventing personas, product strategy, business goals, KPI targets, roadmap dates, stakeholder ownership, or technical decisions;
+- separates evidence from assumptions;
+- defines product vision, purpose, problem, opportunity, audiences, objectives, scope, and high-level capabilities;
+- distinguishes metrics, KPIs, and guardrail metrics;
+- supports high-level phases and roadmap direction without inventing delivery schedules;
+- captures strategic constraints, dependencies, stakeholders, governance, and product risks;
+- uses stable IDs for audiences, objectives, KPIs, capabilities, decisions, dependencies, phases, stakeholders, risks, and hypotheses;
+- preserves the boundary between Product PRD, Feature PRD, HLD, and FDD;
+- performs consistency checks before generating the final document;
+- produces a Markdown Product PRD with optional structured JSON output.
+
+- [Documentation](./prompts/documentation/product-prd/README.md)
+- [Prompt](./prompts/documentation/product-prd/prompt.md)
 
 ### Feature PRD
 
